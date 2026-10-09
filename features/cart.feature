@@ -1,11 +1,14 @@
-Feature: Add products to cart
+Feature: Shopping cart
 
-  Scenario: Successfully add two products to the cart
-    Given user is on login page
-    When user enters username "standard_user"
-    And user enters password "secret_sauce"
-    And user clicks login button
-    And user adds product "Sauce Labs Backpack" to the cart
-    And user adds product "Sauce Labs Bike Light" to the cart
-    And user opens the cart
-    Then the cart should contain products "Sauce Labs Backpack" and "Sauce Labs Bike Light"
+  @smoke @regression
+  Scenario: Add a product to the cart
+    Given the user is logged in with valid credentials
+    When the user adds the backpack to the cart
+    Then the cart badge should show 1 item
+
+  @smoke @regression
+  Scenario: Verify selected products in the cart
+    Given the user is logged in with valid credentials
+    When the user adds the backpack and bike light to the cart
+    And the user opens the cart
+    Then the cart should contain the backpack and bike light

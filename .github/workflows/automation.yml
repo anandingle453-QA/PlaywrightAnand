@@ -1,0 +1,60 @@
+name: SauceDemo BDD automation
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cucumber:
+    name: Cucumber BDD suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Cucumber suite
+        run: npm test
+        env:
+          CI: true
+          HEADLESS: true
+          SAUCEDEMO_USERNAME: ${{ secrets.SAUCEDEMO_USERNAME }}
+          SAUCEDEMO_PASSWORD: ${{ secrets.SAUCEDEMO_PASSWORD }}
+
+      - name: Generate Allure report
+        if: ${{ always() }}
+        run: npm run allure:generate
+        continue-on-error: true
+
+      - name: Upload test reports and failure artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: saucedemo-test-reports
+          path: |
+            reports/cucumber-report.html
+            allure-results/
+            allure-report/
+            screenshots/
+            traces/
+          if-no-files-found: warn
+          retention-days: 14

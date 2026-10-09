@@ -1,26 +1,28 @@
 {
-  "name": "anandbddcuccumber",
+  "name": "saucedemo-automation",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "cucumber-js",
-    "test:playwright": "playwright test"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "description": "SauceDemo end-to-end automation with Playwright, Cucumber BDD, and Allure",
+  "private": true,
   "type": "commonjs",
+  "scripts": {
+    "test": "npm run test:bdd",
+    "test:bdd": "cucumber-js",
+    "test:smoke": "cucumber-js --tags \"@smoke\"",
+    "test:regression": "cucumber-js --tags \"@regression\"",
+    "test:report": "npm run test:bdd && npm run allure:generate",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "playwright:install": "playwright install chromium"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "@cucumber/cucumber": "^13.2.1",
+    "allure-cucumberjs": "^3.12.2",
     "playwright": "^1.63.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0",
-    "@types/node": "^22.20.2",
-    "allure-commandline": "^2.46.1",
-    "allure-cucumberjs": "^3.12.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^6.0.3"
+    "allure-commandline": "^2.46.1"
   }
 }

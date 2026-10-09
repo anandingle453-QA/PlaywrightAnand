@@ -1,8 +1,20 @@
-
-# Playwright
 node_modules/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
+.env
+.env.*
+!.env.example
+allure-results/
+allure-report/
+test-results/
+reports/*
+!reports/.gitkeep
+screenshots/*
+!screenshots/.gitkeep
+traces/*
+!traces/.gitkeep
+videos/*
+!videos/.gitkeep
+playwright-report/
+blob-report/
+playwright/.cache/
+playwright/.auth/
+npm-debug.log*
